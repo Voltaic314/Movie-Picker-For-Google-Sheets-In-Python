@@ -1,3 +1,5 @@
+##This code was created by Logan Maupin aka Voltaic314 on Github. I am a student at the University of Arizona Online Studying Applied Computing - Applied Artificial Intelligence. My hope is to one day use my eventual gained coding skills to contribute to machine learning models in the Natural Language Processing field for better General (simulated) Artificial Intelligence. I hope you all enjoy this program and feel free to leave suggestions as I am only a beginner programmer right now. 
+
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 import random
