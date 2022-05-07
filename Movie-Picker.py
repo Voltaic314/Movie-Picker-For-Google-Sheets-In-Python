@@ -1,7 +1,7 @@
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 import random
-import config
+import config #import config is only necessary for the spreadsheet ID variable that I was hiding in my code. If you inject your ID directly into your code you can do away with this line. 
 
 SERVICE_ACCOUNT_FILE = 'keys.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
