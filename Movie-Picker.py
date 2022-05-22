@@ -1,9 +1,8 @@
-##This code was created by Logan Maupin aka Voltaic314 on Github. I am a student at the University of Arizona Online Studying Applied Computing - Applied Artificial Intelligence. My hope is to one day use my eventual gained coding skills to contribute to machine learning models in the Natural Language Processing field for better General (simulated) Artificial Intelligence. I hope you all enjoy this program and feel free to leave suggestions as I am only a beginner programmer right now. 
-
-from googleapiclient.discovery import build
-from google.oauth2 import service_account
-import random
-import config #import config is only necessary for the spreadsheet ID variable that I was hiding in my code. If you inject your ID directly into your code you can do away with this line. 
+from googleapiclient.discovery import build #used for google sheets info
+from google.oauth2 import service_account # also used for google sheets info
+import random #used for generating random choice (duh)
+import config #used to hold our sensitive info
+import time #used for sleep (lol)
 
 SERVICE_ACCOUNT_FILE = 'keys.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -14,18 +13,90 @@ creds = service_account.Credentials.from_service_account_file(
 
 service = build('sheets', 'v4', credentials=creds)
 
-# Call the Sheets API
 sheet = service.spreadsheets()
-result = sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
-                            range="Media!A1:F999").execute() # Please note that the "Media!" part of this denotes the name of the sheet itself on the overall spreadsheet, make sure yours matches otherwise the code will not work. 
-# also note above that the A1:F999 represents the range. The code treats every row as a single list, so best to organize your media row by row as a single item. Your range can be whatever you need. 
 
-values = result.get('values', []) #get values from spreadsheet
+watched_or_unwatched_prompt = str(input("Would you like to watch a new random movie today or a random movie you have already watched? \nPlease type: W for watched or U for unwatched:\n(at any time type X to exit the program)\n")).upper()
 
-str_match = [s for s in values if "*No*" in s] #creates a variable for all the lines of the spreadsheet that contain *No*
+result_headers_w = sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
+                            range="Movies!I2:N2").execute()
 
-#Note that each item in the following line represents a column in the spreadsheet we used, feel free to modify this line however to fit your needs, this has nothing to do with the actual spreadsheet, mainly just printing a line to understand what you are reading). 
-print("Media Title, Genre, Watched by Person A? & Watched by Person B? - Person A's Rating - Person B's Rating") #This prints this line into text to make the output easier to understand
+column_headers_w = result_headers_w.get('values', []) #get values from spreadsheet
 
-#This prints a single random output from all the values that match the str_match criteria
-print(random.choice(str_match)) 
+result_headers_u = sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
+                            range="Movies!A2:F2").execute()
+
+column_headers_u = result_headers_u.get('values', []) #get values from spreadsheet
+
+running = True
+while running:
+    if watched_or_unwatched_prompt == "W":
+
+        #grab the sheet info from the API
+        result_w = sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
+                                    range="Movies!I:N").execute()
+
+        # build that into a list of lists
+        watched_movies = result_w.get('values', [])
+
+        #make the program seem more retro and realistic
+        print("Generating random watched movie, please wait...\n")
+
+        #sleeps make people think the program works better believe it or not. lol
+        time.sleep(3)
+        print(column_headers_w) # This prints this line into text to make the output easier to understand
+        print(random.choice(watched_movies)) # This prints a single random output from all the values in the watched columns.
+
+        # determine whether user is satisfied with the randomly generated selection
+        satisfied_input_w = str(input("\nAre you satisfied with this result?\nPlease enter Y or N:\n(At any time type X to exit the program)\n")).upper()
+
+        #if statements to determine whether the code should run agian or not. (Note that continue here will only generate a movie in the U or W category, whichever was selected at the start.
+        if satisfied_input_w == "Y":
+            running = False
+        elif satisfied_input_w == "N":
+            continue
+        elif satisfied_input_w == "X":
+            running = False
+        else:
+            print("I didn't quite catch that. Would you like to watch a movie you've seen before or a new movie? Please entier W or U:\n")
+
+    elif watched_or_unwatched_prompt == "U":
+
+        #grab the sheet info from the API
+        result_u= sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
+                                    range="Movies!A:F").execute()
+
+        #build that into a list of lists
+        unwatched_movies = result_u.get('values', [])
+
+        #make the program seem more retro and realistic
+        print("Generating random unwatched movie, please wait...\n")
+
+        #sleeps make people think the program works better, believe it or not. lol
+        time.sleep(3)
+        print(column_headers_u)# This prints this line into text to make the output easier to understand
+        print(random.choice(unwatched_movies))  # This prints a single random output from all the values in the unwatched columns
+
+        # determine whether user is satisfied with the randomly generated selection
+        satisfied_input_u = str(input("\nAre you satisfied with this result?\nPlease enter Y or N:\n(At any time type X to exit the program)\n")).upper()
+
+        #if statements to determine whether the code should run agian or not. (Note that continue here will only generate a movie in the U or W category, whichever was selected at the start.
+        if satisfied_input_u == "Y":
+            running = False
+        elif satisfied_input_u == "N":
+            continue
+        elif satisfied_input_u == "X":
+            running = False
+        else:
+            print("I didn't quite catch that. Would you like to watch a movie you've seen before or a new movie? Please entier W or U:\n")
+
+    #finish the program / break the loop.
+    elif watched_or_unwatched_prompt == "X":
+        running = False
+
+    # tell the user they are a moron for not inputting the one of only 2 options they had available to them.
+    else:
+        print("I didn't quite catch that. Would you like to watch a movie you've seen before or a new movie? Please entier W or U:\n")
+        continue
+
+#just so the user knows for sure...
+print("Program finished.")
