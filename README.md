@@ -1,7 +1,7 @@
 # Movie-Picker-For-Google-Sheets-In-Python
 Python code for picking a random movie from your list, completely psuedo-random.
 
-* This code was created by Logan Maupin aka Voltaic314 on Github. I am a student at the University of Arizona Online studying Applied Computing - Artificial Intelligence. It is my hope that one day with my degree (once I graduate) I will be able to contribute to research and application projects of Machine Learning in Natural Language Processing. I believe it is the future of General AI Intelligence and will be the forefront to the new AI revolution. Exciting times are ahead, I am just one lowly programmer nerd contributing his works one project at a time. 
+This code was created by Logan Maupin aka Voltaic314 on Github. I am a student at the University of Arizona Online studying Applied Computing - Artificial Intelligence. It is my hope that one day with my degree (once I graduate) I will be able to contribute to research and application projects of Machine Learning in Natural Language Processing. I believe it is the future of General AI Intelligence and will be the forefront to the new AI revolution. Exciting times are ahead, I am just one lowly programmer nerd contributing his works one project at a time. 
 
 
 ############
