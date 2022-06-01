@@ -33,7 +33,7 @@ while running:
 
         #grab the sheet info from the API
         result_w = sheet.values().get(spreadsheetId=config.config_stuff['SAMPLE_SPREADSHEET_ID'],
-                                    range="Movies!I:N").execute()
+                                    range="Movies!I:L").execute()
 
         # build that into a list of lists
         watched_movies = result_w.get('values', [])
